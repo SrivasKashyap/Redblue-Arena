@@ -14,7 +14,7 @@
 
 const express = require('express');
 const rateLimit = require('express-rate-limit');
-const { createProxyMiddleware } = require('http-proxy-middleware');
+const { createProxyMiddleware, fixRequestBody } = require('http-proxy-middleware');
 const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config();
 
@@ -122,6 +122,7 @@ app.use(
     changeOrigin: true,
     ws: true,
     on: {
+      proxyReq: fixRequestBody,
       proxyRes: (proxyRes) => {
         delete proxyRes.headers['x-frame-options'];
         delete proxyRes.headers['content-security-policy'];
