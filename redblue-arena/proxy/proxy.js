@@ -121,6 +121,12 @@ app.use(
     target: TARGET,
     changeOrigin: true,
     ws: true,
+    on: {
+      proxyRes: (proxyRes) => {
+        delete proxyRes.headers['x-frame-options'];
+        delete proxyRes.headers['content-security-policy'];
+      },
+    },
   })
 );
 
